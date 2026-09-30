@@ -99,10 +99,10 @@ Tata letak bawaan (Xbox / tata letak standar; padanan PlayStation ditulis dalam 
 | B (○) | Jongkok / turun |
 | X (□) | Ambil jenis blok |
 | Y (△) | Tas Blok |
-| LB / RB (L1 / R1) | Slot hotbar sebelumnya / berikutnya |
+| LB / RB (L1 / R1) atau D-pad ← / → | Slot hotbar sebelumnya / berikutnya |
 | LT (L2) | Pasang blok |
 | RT (R2) | Hancurkan / pukul |
-| L3 (tekan stik kiri) | Berlari |
+| L3 (tekan stik kiri) | Berlari (aktif sampai berhenti bergerak) |
 | D-pad ↑ | Ganti kamera |
 | D-pad ↓ | Mode terbang |
 | Back / Select (Share / Create) | Ganti tema |

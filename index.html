@@ -141,7 +141,7 @@ kbd {
 #block-name.faded { opacity: 0; }
 #hotbar { display: flex; gap: 6px; padding: 8px; pointer-events: auto; }
 .slot {
-  position: relative; width: 58px; height: 58px; border-radius: 12px; display: grid; place-items: center;
+  position: relative; width: 58px; height: 58px; border-radius: 12px; display: grid; place-items: center; cursor: pointer;
   background: rgba(0, 0, 0, 0.28); border: 1px solid rgba(255, 255, 255, 0.12); transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s;
 }
 .slot canvas { width: 46px; height: 46px; image-rendering: auto; }
@@ -247,11 +247,16 @@ body[data-theme="cyber"] #logo::after { opacity: 0.85; color: #ff2bd6; -webkit-t
 }
 .btn:hover { background: rgba(255, 255, 255, 0.14); border-color: var(--acc); box-shadow: 0 0 16px var(--acc); transform: translateY(-1px); }
 .btn:active { transform: translateY(1px); }
+.btn:focus-visible, .theme-card:focus-visible, .seg button:focus-visible, .bag-tab:focus-visible, .wtype:focus-visible, .bag-item:focus-visible, .pad-map button:focus-visible, .switch:focus-visible {
+  outline: 2px solid var(--acc2); outline-offset: 2px; box-shadow: 0 0 14px var(--acc2);
+}
 .btn.primary {
   grid-column: 1 / -1; font-size: 19px; padding: 16px; color: #150a1c; border: 0;
   background: linear-gradient(90deg, var(--acc), var(--acc2)); box-shadow: 0 0 22px var(--acc), 0 0 42px rgba(0, 0, 0, 0.2);
 }
 .btn.primary:hover { filter: brightness(1.12); box-shadow: 0 0 30px var(--acc), 0 0 60px var(--acc2); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn:disabled:hover { background: rgba(255, 255, 255, 0.06); border-color: var(--edge); box-shadow: none; transform: none; }
 .menu-foot { width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 14px; opacity: 0.85; padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
 .menu-foot span { padding-top: 8px; }
 
@@ -506,7 +511,7 @@ input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border: 0; bord
       </div>
       <div class="mp-box">
         <h3>GABUNG ROOM</h3>
-        <input id="mp-join-code" class="text-input mp-code-input" maxlength="6" placeholder="KODE ROOM" spellcheck="false" autocomplete="off">
+        <input id="mp-join-code" class="text-input mp-code-input" maxlength="6" placeholder="KODE ROOM" spellcheck="false" autocomplete="off" autocapitalize="characters" autocorrect="off">
         <button class="btn" id="mp-join">GABUNG</button>
       </div>
     </div>
@@ -6589,6 +6594,7 @@ function buildHotbar() {
   for (let i = 0; i < 9; i++) {
     const s = document.createElement('div');
     s.className = 'slot';
+    s.addEventListener('click', () => { selectSlot(i); sfx('ui'); });
     const c = document.createElement('canvas');
     c.width = c.height = ICON_SIZE;
     const b = document.createElement('b');
@@ -6862,6 +6868,7 @@ function syncSettingsUI() {
   $('set-music').value = String(settings.music); $('val-music').textContent = Math.round(settings.music * 100) + '%';
   $('set-sfx').value = String(settings.sfx); $('val-sfx').textContent = Math.round(settings.sfx * 100) + '%';
   $('set-fps').classList.toggle('on', settings.showFps);
+  $('set-fps').setAttribute('aria-pressed', settings.showFps ? 'true' : 'false');
   $('fps-label').hidden = !settings.showFps;
   syncAtmoUI();
 }
@@ -6876,6 +6883,7 @@ function syncAtmoUI() {
   $('val-time').textContent = formatClock(atmo.time);
   const cyc = net.role === 'client' ? atmo.remoteCycle : settings.dayCycle;
   $('set-cycle').classList.toggle('on', !!cyc);
+  $('set-cycle').setAttribute('aria-pressed', cyc ? 'true' : 'false');
   const wsel = net.role === 'client' ? atmo.weather : settings.weather;
   for (const b of document.querySelectorAll('#set-weather button')) b.classList.toggle('on', b.dataset.w === wsel);
 }
@@ -9139,7 +9147,9 @@ function syncPadUI() {
   $('set-pad-sens').value = String(settings.padSens);
   $('val-pad-sens').textContent = settings.padSens.toFixed(2);
   $('set-pad-inv').classList.toggle('on', settings.padInv);
+  $('set-pad-inv').setAttribute('aria-pressed', settings.padInv ? 'true' : 'false');
   $('set-pad-vib').classList.toggle('on', settings.padVib);
+  $('set-pad-vib').setAttribute('aria-pressed', settings.padVib ? 'true' : 'false');
   renderPadMap();
   padSyncStatus();
   padSyncCalibUI();
